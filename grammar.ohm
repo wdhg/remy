@@ -1,0 +1,53 @@
+Lang {
+  Recipe
+    = "#" space* "Equipment" Equipment* "#" space* "Ingredients" Ingredient* "#" space* "Steps" Step*
+  Equipment
+    = QuantifiedNoun ("," Adjectives)? ("as" Noun)? "."
+  Ingredient
+    = QuantifiedNoun ("," Adjectives)? ("as" Noun)? "."
+  Step = SubStep "."
+  SubStep = Adverbs? Verb StepNouns ("with" QuantifiedNouns)? ("at" Level)? (Locator Noun)? ("for" Duration)? ("until" StepPredicate)? ("and" SubStep)?
+  StepPredicate
+    = "temperature" spaces "is" Temperature -- temperaturePredicate
+    | (Noun spaces "is") ? Adjectives -- adjectivePredicate  
+  StepNouns
+    = "it"
+    | "everything"
+    | QuantifiedNouns
+
+  QuantifiedNouns = QuantifiedNoun ("," QuantifiedNoun)*
+  QuantifiedNoun
+    = Quantity "-" Quantity Noun -- rangeQuantifiedNoun
+    | Quantity Noun -- quantifiedNoun
+    | Noun -- noun
+  Quantity
+    = "all" -- allQuantity
+    | Number? "pinch" -- pinchQuantity
+    | "few" (spaces UnitNoun)? -- fewQuantity
+    | Number UnitNoun -- measuredQuantity
+    | Integer "x" -- partsQuantity
+    | Number -- numberedQuantity
+
+  Locator = "in" | "on" | "over" | "to"
+  Level = "low" | "medium-low" | "medium" |  "medium-high" | "high" | "max"
+  Temperature = Decimal TempUnit
+  Duration = Number UnitNoun ("-" Number UnitNoun)?
+  TempUnit = "F" | "C" | "K"
+
+  Number
+    = Fraction
+    | Decimal 
+  Fraction = Integer "/" Integer
+  Decimal = Integer ("." Integer) ?
+  Integer = digit+
+
+  Adjectives = Adjective ("," Adjective)*
+  Adverbs = Adverb ("," Adverb)*
+  Noun = pascalCase
+  Verb = pascalCase
+  UnitNoun = camelCase
+  Adjective = camelCase
+  Adverb = camelCase
+  pascalCase = upper letter*
+  camelCase = lower letter*
+}
