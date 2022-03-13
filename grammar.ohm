@@ -1,46 +1,57 @@
 Lang {
   Recipe
-    = "#" space* "Equipment" Equipment* "#" space* "Ingredients" Ingredient* "#" space* "Steps" Step*
-  Equipment
+    = "#Equipment" Requirement* "#Ingredients" Requirement* "#Steps" Step*
+  Requirement
     = QuantifiedNoun ("," Adjectives)? ("as" Noun)? "."
-  Ingredient
-    = QuantifiedNoun ("," Adjectives)? ("as" Noun)? "."
-  Step = SubStep "."
-  SubStep = Adverbs? Verb StepNouns ("with" QuantifiedNouns)? ("at" Level)? (Locator Noun)? ("for" Duration)? ("until" StepPredicate)? ("and" SubStep)?
+  Step = SubStep ("and" SubStep)* "."
+  SubStep
+    = Adverbs? Verb StepNouns
+      StepWith?
+      StepLocator?
+      StepAt?
+      StepFor?
+      StepUntil?
+  StepWith = "with" QuantifiedNouns
+  StepLocator = Locator Noun
+  StepAt = "at" Level
+  StepFor = "for" Duration
+  StepUntil = "until" StepPredicate
   StepPredicate
     = "temperature" spaces "is" Temperature -- temperature
-    | (Noun spaces "is") ? Adjectives -- adjective
+    | Noun "is" Adjectives -- nounAdjectives
+    | Adjectives -- adjectives
   StepNouns
-    = "it"
-    | "everything"
-    | QuantifiedNouns
+    = "it" -- it
+    | "everything" -- everything
+    | QuantifiedNouns -- nouns
 
   QuantifiedNouns = QuantifiedNoun ("," QuantifiedNoun)*
   QuantifiedNoun
     = Quantity "-" Quantity Noun -- range
     | Quantity Noun -- quantified
-    | Noun -- noun
+    | Noun -- unquantified
   Quantity
     = "all" -- all
-    | Number? "pinch" -- pinch
-    | "few" (spaces UnitNoun)? -- few
-    | Number UnitNoun -- measured
-    | Integer "x" -- parts
-    | Number -- numbered
+    | "few" UnitNoun -- fewUnit
+    | "few" -- few
+    | Number UnitNoun -- numberUnit
+    | Number -- number
+
+  Duration
+    = DurationRange -- range
+    | DurationSingle -- single
+  DurationRange = DurationSingle "-" DurationSingle
+  DurationSingle = Number UnitNoun
+  Temperature = Number TempUnit
+  TempUnit = "F" | "C" | "K"
+  Number
+    = Integer "/" Integer -- fraction
+    | Integer "." Integer -- decimal
+    | Integer -- integer
+  Integer = digit+
 
   Locator = "in" | "on" | "over" | "to"
   Level = "low" | "medium-low" | "medium" |  "medium-high" | "high" | "max"
-  Temperature = Decimal TempUnit
-  Duration = Number UnitNoun ("-" Number UnitNoun)?
-  TempUnit = "F" | "C" | "K"
-
-  Number
-    = Fraction
-    | Decimal 
-  Fraction = Integer "/" Integer
-  Decimal = Integer ("." Integer) ?
-  Integer = digit+
-
   Adjectives = Adjective ("," Adjective)*
   Adverbs = Adverb ("," Adverb)*
   Noun = pascalCase

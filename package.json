@@ -2,7 +2,7 @@
   "name": "remy",
   "version": "1.0.0",
   "description": "A formal language for recipes",
-  "main": "index.js",
+  "main": "example.js",
   "directories": {
     "example": "examples"
   },
