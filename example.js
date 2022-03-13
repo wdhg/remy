@@ -14,11 +14,11 @@ semantics.addOperation("visit", {
       steps: steps.children.map((s) => s.visit()),
     };
   },
-  Requirement: (names, _comma, adjectives, _as, name, _dot) => {
+  Requirement: (name, _comma, adjectives, _as, newName, _dot) => {
     return {
-      names: names.children.map((n) => n.visit()),
+      name: name.children.map((n) => n.visit()),
       adjectives: adjectives.children.map((a) => a.visit()),
-      name: name.children.map((n) => n.visit())[0],
+      newName: newName.children.map((n) => n.visit())[0],
     };
   },
   // step
