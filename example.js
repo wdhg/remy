@@ -16,7 +16,7 @@ semantics.addOperation("visit", {
   },
   Requirement: (name, _comma, adjectives, _as, newName, _dot) => {
     return {
-      name: name.children.map((n) => n.visit()),
+      ...name.visit(),
       adjectives: adjectives.children.map((a) => a.visit()),
       newName: newName.children.map((n) => n.visit())[0],
     };
