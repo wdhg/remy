@@ -8,8 +8,8 @@ Lang {
   Step = SubStep "."
   SubStep = Adverbs? Verb StepNouns ("with" QuantifiedNouns)? ("at" Level)? (Locator Noun)? ("for" Duration)? ("until" StepPredicate)? ("and" SubStep)?
   StepPredicate
-    = "temperature" spaces "is" Temperature -- temperaturePredicate
-    | (Noun spaces "is") ? Adjectives -- adjectivePredicate  
+    = "temperature" spaces "is" Temperature -- temperature
+    | (Noun spaces "is") ? Adjectives -- adjective
   StepNouns
     = "it"
     | "everything"
@@ -17,16 +17,16 @@ Lang {
 
   QuantifiedNouns = QuantifiedNoun ("," QuantifiedNoun)*
   QuantifiedNoun
-    = Quantity "-" Quantity Noun -- rangeQuantifiedNoun
-    | Quantity Noun -- quantifiedNoun
+    = Quantity "-" Quantity Noun -- range
+    | Quantity Noun -- quantified
     | Noun -- noun
   Quantity
-    = "all" -- allQuantity
-    | Number? "pinch" -- pinchQuantity
-    | "few" (spaces UnitNoun)? -- fewQuantity
-    | Number UnitNoun -- measuredQuantity
-    | Integer "x" -- partsQuantity
-    | Number -- numberedQuantity
+    = "all" -- all
+    | Number? "pinch" -- pinch
+    | "few" (spaces UnitNoun)? -- few
+    | Number UnitNoun -- measured
+    | Integer "x" -- parts
+    | Number -- numbered
 
   Locator = "in" | "on" | "over" | "to"
   Level = "low" | "medium-low" | "medium" |  "medium-high" | "high" | "max"
